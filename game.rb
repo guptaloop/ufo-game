@@ -1,8 +1,13 @@
+require 'set'
+
 class Game
-  attr_reader :codeword
+  attr_reader :codeword, :alphabet, :guessed
 
   def initialize
     @codeword = gen_codeword()
+    @alphabet = gen_alpha_set()
+    @guessed = Set.new
+
   end
 
   def gen_codeword
@@ -13,6 +18,11 @@ class Game
     
     # randomly choose the codeword from the words array
     return words.sample
+  end
+
+  def gen_alpha_set
+    set = Set.new
+    return set | ('a'..'z')
   end
 
   def render
