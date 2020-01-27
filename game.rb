@@ -14,30 +14,42 @@ class Game
 
   def gen_codeword
     # convert nouns.txt to an array of strings
-    words = File.readlines('assets/nouns.txt').map do |line|
-      line.split.map(&:to_s)
+    words = []
+    File.readlines('assets/nouns.txt').map do |line|
+      words << line
     end
     # randomly choose the codeword from the words array
     return words.sample
   end
 
+  def codeword_key
+    key = ""
+    (@codeword.length - 1).times do
+      key += "_ "
+    end
+    return key
+  end
+
   def render
-    puts ""
-    puts "UFO: The Game"
-    puts "Instructions: save us from alien abduction by guessing letters in the codeword."
-    puts ""
-    puts "UFO TEXT"
+    if @incorrect_guesses < 1 && @guessed.empty?
+      puts 
+      puts "UFO: The Game"
+      puts "Instructions: save us from alien abduction by guessing letters in the codeword."
+      puts 
+      puts UFO::DISPLAY[@incorrect_guesses]
+      puts
+      puts "Incorrect Guesses:"
+      puts "None"
+      puts
+      puts "Codeword:"
+      puts codeword_key()
+      puts
+    else
 
-    puts UFO::DISPLAY[0]
-    puts UFO::DISPLAY[1]
-    puts UFO::DISPLAY[2]
-    puts UFO::DISPLAY[3]
-    puts UFO::DISPLAY[4]
-    puts UFO::DISPLAY[5]
-    puts UFO::DISPLAY[6]
-    # render the UFO
+    end
 
-    # puts @codeword
+    puts @codeword
+    puts
     # puts @alphabet
     # puts @guessed
   end
