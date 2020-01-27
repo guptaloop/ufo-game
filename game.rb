@@ -7,7 +7,7 @@ class Game
 
   def gen_codeword
     # convert nouns.txt to an array of strings
-    words = File.readlines('nouns.txt').map do |line|
+    words = File.readlines('assets/nouns.txt').map do |line|
       line.split.map(&:to_s)
     end
     
