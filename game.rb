@@ -29,6 +29,12 @@ class Game
     puts "UFO TEXT"
 
     puts UFO::DISPLAY[0]
+    puts UFO::DISPLAY[1]
+    puts UFO::DISPLAY[2]
+    puts UFO::DISPLAY[3]
+    puts UFO::DISPLAY[4]
+    puts UFO::DISPLAY[5]
+    puts UFO::DISPLAY[6]
     # render the UFO
 
     # puts @codeword
