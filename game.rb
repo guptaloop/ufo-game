@@ -3,7 +3,7 @@ require_relative 'assets/ufo'
 
 class Game
   attr_reader :codeword, :alphabet, :guessed, :incorrect_guesses, 
-    :incorrect_guess_count, :curr_guess, :char_indices, :codeword_display
+    :incorrect_guess_count, :curr_guess, :char_indices, :codeword_hash
 
   def initialize
     @codeword = gen_codeword()
@@ -14,7 +14,7 @@ class Game
     @incorrect_guess_count = 0
     @curr_guess = ""
     @char_indices = create_char_indices()
-    @codeword_display = codeword_key()
+    @codeword_hash = codeword_key()
     @error_msg = ""
   end
 
@@ -47,9 +47,15 @@ class Game
     return obj
   end
 
+  def update_codeword_hash
+    idxs = @char_indices[@curr_guess]
+    idxs.each { |idx| @codeword_hash[idx] = @curr_guess }
+  end
+
   def is_guess_correct?
     @guessed.add(@curr_guess)
-    if @codeword.include?(@curr_guess) && !@guessed.include?(@curr_guess)
+    if @codeword.include?(@curr_guess)
+      update_codeword_hash()
       return true
     else
       @incorrect_guess_count += 1
@@ -70,46 +76,58 @@ class Game
     end
   end
 
+  def display_title_instrux
+    puts "UFO: The Game"
+    puts "Instructions: save us from alien abduction by guessing letters in the codeword."
+  end
+
+  def display_ufo
+    puts UFO::DISPLAY[@incorrect_guess_count]
+  end
+
+  def display_incorrect_guesses()
+    puts "Incorrect Guesses: "
+    puts @incorrect_guesses.join(" ")
+    puts
+  end
+
+  def display_codeword_hash
+    puts "Codeword:"
+    puts @codeword_hash.join(" ")
+  end
+
   def prompt_user
     puts "Please enter your guess: "
     @curr_guess = gets.chomp.upcase
   end
 
   def render
-    while (@incorrect_guess_count < 6 && @codeword_display.include?("_"))
-      if @curr_guess == ""
-        puts "UFO: The Game"
-        puts "Instructions: save us from alien abduction by guessing letters in the codeword."
-      end
-      
-      puts UFO::DISPLAY[@incorrect_guess_count]
-      puts "Incorrect Guesses:"
-      puts @incorrect_guesses.join(" ")
-      puts
-      puts "Codeword:"
-      puts @codeword_display.join(" ")
-      puts @codeword_display.length
+    while (@incorrect_guess_count < 6 && @codeword_hash.include?("_"))
+      display_title_instrux() if @curr_guess == ""
+    
+      display_ufo()
+      display_incorrect_guesses()
+      display_codeword_hash()
       puts @codeword
 
       prompt_user()
-      
+      # user will be caught in a loop until they enter a valid guess
       while guess_is_invalid?()
         puts @error_msg
         prompt_user()
       end
 
-      # check if guess is correct
+      # check if guess is correct, display appropriate msg
       if is_guess_correct?()
         puts "Correct! You're closer to cracking the codeword."
       else
-        puts @incorrect_guess_count
         puts "Incorrect! The tractor beam pulls the person in further."
       end
 
     end
 
     
-    puts UFO::DISPLAY[@incorrect_guess_count]
+    display_ufo()
     puts "GAME OVER!"
     # play again? 
 
