@@ -39,11 +39,11 @@ class Game
 	end
 	####
 
-	def codeword_has_been_guessed
+	def codeword_has_been_guessed?
 		!@codeword_hash.include?("_") ? true : false
 	end
 
-	def person_has_been_abducted
+	def person_has_been_abducted?
 		@incorrect_guesses.size >= 6 ? true : false
 	end
 
@@ -132,14 +132,14 @@ class Game
 			@correct_guesses.add(@curr_guess)
 			update_codeword_hash()
 			update_dictionary_matches("correct")
-			unless codeword_has_been_guessed()
+			unless codeword_has_been_guessed?()
 				puts
 				puts "Correct! You're closer to cracking the codeword."
 			end
 		else
 			@incorrect_guesses.add(@curr_guess)
 			update_dictionary_matches("incorrect")
-			unless person_has_been_abducted()
+			unless person_has_been_abducted?()
 				puts
 				puts "Incorrect! The tractor beam pulls the person in further."
 			end
@@ -157,10 +157,10 @@ class Game
 	end
 
 	def display_game_over_msg
-		if person_has_been_abducted()
+		if person_has_been_abducted?()
 			puts
 			puts "Incorrect! The person has been abducted!"
-		elsif codeword_has_been_guessed()
+		elsif codeword_has_been_guessed?()
 			puts
 			puts "Correct! You saved the person and earned a medal of honor!"
 		end
@@ -178,7 +178,7 @@ class Game
 	end
 
 	def play
-		until codeword_has_been_guessed() || person_has_been_abducted()
+		until codeword_has_been_guessed?() || person_has_been_abducted?()
 			display_title_instrux() if @curr_guess == ""
 
 			display_ufo()
