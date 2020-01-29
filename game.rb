@@ -1,11 +1,9 @@
 require 'set'
 require_relative 'dictionary'
 require_relative 'assets/ufo'
+require 'byebug'
 
 class Game
-
-	attr_accessor :alphabet, :correct_guesses, :incorrect_guesses, 
-		:dictionary, :guess, :input_error
 
 	def initialize
 		## use Sets to optimize lookup and deletion operations
@@ -18,49 +16,49 @@ class Game
 	end
 
 	def play
-		until @dictionary.codeword_solved? || is_person_abducted?
-			display_title_instrux if @guess == ""
-
-			display_ufo
-			display_incorrect_guesses
-			@dictionary.display_codeword_hash
-			@dictionary.display_matches
+		until @dictionary.is_codeword_solved? || is_person_abducted?
+			render_title_instrux if @guess == ""
+			render_ufo
+			render_incorrect_guesses
+			@dictionary.render_codeword_hash
+			@dictionary.render_codeword_matches
 			prompt_player
-
-			# # player will be caught in a loop until they enter a valid guess
+			# player will be caught in a loop until they enter a valid guess
 			while is_guess_invalid?
-				display_input_error
+				render_input_error
 				prompt_player
 			end
-
 			is_guess_correct?
 		end
 
-		display_game_over_msg
-		play_again?
+		render_game_over_msg
+		render_play_again_prompt?
 	end
+
+	# no need to expose these methods outside of this class
+	private
 
 	def is_person_abducted?
 		@incorrect_guesses.size >= 6 ? true : false
 	end
 
-	def display_title_instrux
+	def render_title_instrux
 		puts
 		puts "UFO: The Game"
 		puts "Instructions: save us from alien abduction by guessing letters in the codeword."
 	end
 
-	def display_ufo
+	def render_ufo
 		puts
-		puts UFO::DISPLAY[@incorrect_guesses.size]
+		puts UFO::render[@incorrect_guesses.size]
 		puts
 	end
 
-	def display_incorrect_guesses
-		incorrect_str = ""
-		@incorrect_guesses.each { |letter| incorrect_str += letter + " "}
+	def render_incorrect_guesses
+		str = ""
+		@incorrect_guesses.each { |letter| str += letter + " "}
 		puts "Incorrect Guesses: "
-		incorrect_str == "" ? (puts "None") : (puts "#{incorrect_str}")
+		str == "" ? (puts "None") : (puts "#{str}")
 		puts
 	end
 
@@ -80,25 +78,24 @@ class Game
 		return false
 	end
 
-	def display_input_error
+	def render_input_error
 		puts
 		puts @input_error
 		puts
 	end
 
 	def is_guess_correct?
-		
-		if @dictionary.get_codeword.include?(@guess)
+		if @dictionary.codeword.include?(@guess)
 			@correct_guesses.add(@guess)
 			@dictionary.update_codeword_hash(@guess)
-			@dictionary.update_matches("correct", @correct_guesses)
-			unless @dictionary.codeword_solved?
+			@dictionary.update_codeword_matches("correct", @correct_guesses)
+			unless @dictionary.is_codeword_solved?
 				puts
 				puts "Correct! You're closer to cracking the codeword."
 			end
 		else
 			@incorrect_guesses.add(@guess)
-			@dictionary.update_matches("incorrect", @incorrect_guesses)
+			@dictionary.update_codeword_matches("incorrect", @incorrect_guesses)
 			unless is_person_abducted?
 				puts
 				puts "Incorrect! The tractor beam pulls the person in further."
@@ -106,19 +103,19 @@ class Game
 		end
 	end
 
-	def display_game_over_msg
+	def render_game_over_msg
 		if is_person_abducted?
 			puts
 			puts "Incorrect! The person has been abducted!"
-		elsif @dictionary.codeword_solved?
+		elsif @dictionary.is_codeword_solved?
 			puts
 			puts "Correct! You saved the person and earned a medal of honor!"
 		end
-		puts "The codeword is: #{@dictionary.get_codeword}."
+		puts "The codeword is: #{@dictionary.codeword}."
 		puts
 	end
 
-	def play_again?
+	def render_play_again_prompt?
 		print "Would you like to play again (Y/N)? "
 		gets.chomp.upcase == 'Y' ? Game.new.play : (
 			puts
@@ -126,8 +123,8 @@ class Game
 			puts
 		)
 	end
-# class end
-end
+
+end # class end
 
 if $PROGRAM_NAME == __FILE__
 	Game.new.play
