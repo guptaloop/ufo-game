@@ -5,7 +5,8 @@ require 'byebug'
 
 class Game
 
-	attr_accessor :alphabet, :correct_guesses, :incorrect_guesses, :dictionary, :guess, :input_error
+	attr_accessor :alphabet, :correct_guesses, :incorrect_guesses, 
+		:dictionary, :guess, :input_error
 
 	def initialize
 		## use Sets to optimize lookup and deletion operations
@@ -18,7 +19,7 @@ class Game
 	end
 
 	def play
-		until @dictionary.codeword_solved? || person_has_been_abducted?
+		until @dictionary.codeword_solved? || is_person_abducted?
 			display_title_instrux if @guess == ""
 
 			display_ufo
@@ -40,7 +41,7 @@ class Game
 		play_again?
 	end
 
-	def person_has_been_abducted?
+	def is_person_abducted?
 		@incorrect_guesses.size >= 6 ? true : false
 	end
 
@@ -70,14 +71,15 @@ class Game
 	end
 
 	def is_guess_invalid?
+		# debugger
 		if @correct_guesses.include?(@guess) || @incorrect_guesses.include?(@guess)
 			@input_error = "You can only guess that letter once, please try again."
-			true
+			return true
 		elsif !@alphabet.include?(@guess) || @guess.length != 1
 			@input_error = "I cannot understand your input. Please guess a single letter."
-			true
+			return true
 		end
-			false
+		return false
 	end
 
 	def display_input_error
@@ -87,7 +89,7 @@ class Game
 	end
 
 	def is_guess_correct?
-		# debugger
+		
 		if @dictionary.get_codeword.include?(@guess)
 			@correct_guesses.add(@guess)
 			@dictionary.update_codeword_hash(@guess)
@@ -99,7 +101,7 @@ class Game
 		else
 			@incorrect_guesses.add(@guess)
 			@dictionary.update_matches("incorrect", @incorrect_guesses)
-			unless person_has_been_abducted?
+			unless is_person_abducted?
 				puts
 				puts "Incorrect! The tractor beam pulls the person in further."
 			end
@@ -107,7 +109,7 @@ class Game
 	end
 
 	def display_game_over_msg
-		if person_has_been_abducted?
+		if is_person_abducted?
 			puts
 			puts "Incorrect! The person has been abducted!"
 		elsif @dictionary.codeword_solved?
