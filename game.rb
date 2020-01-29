@@ -1,7 +1,6 @@
 require 'set'
 require_relative 'dictionary'
 require_relative 'assets/ufo'
-require 'byebug'
 
 class Game
 
@@ -71,7 +70,6 @@ class Game
 	end
 
 	def is_guess_invalid?
-		# debugger
 		if @correct_guesses.include?(@guess) || @incorrect_guesses.include?(@guess)
 			@input_error = "You can only guess that letter once, please try again."
 			return true
