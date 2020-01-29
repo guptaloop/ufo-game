@@ -2,7 +2,10 @@
 UFO Game for Codecademy's 2020 Internship Coding Challenge
 
 
-Write out instructions to download and run game here:
+## Instructions for playing UFO: The Game
 
-1. To start the game, enter command <ruby game.rb> in your terminal
-...
+1. Unzip the file, and open Terminal
+2. In Terminal, navigate to the folder you just unzipped
+3. In Terminal, run command <ruby game.rb>
+4. Follow the instructions in Terminal to play the game.
+5. Enjoy!
