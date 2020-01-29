@@ -1,5 +1,5 @@
 module UFO
-     DISPLAY = ["                 .
+     RENDER = ["                 .
                  |
               .-\"^\"-.
              /_....._\\

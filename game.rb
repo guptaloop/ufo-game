@@ -50,7 +50,7 @@ class Game
 
 	def render_ufo
 		puts
-		puts UFO::render[@incorrect_guesses.size]
+		puts UFO::RENDER[@incorrect_guesses.size]
 		puts
 	end
 

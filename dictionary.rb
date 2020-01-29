@@ -14,6 +14,7 @@ class Dictionary
 	end
 
 	# public API for Game class
+	
 	def is_codeword_solved?
 		!@codeword_hash.include?("_") ? true : false
   end
