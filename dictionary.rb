@@ -81,4 +81,4 @@ class Dictionary
     set
 	end
 
-end # class end
+end

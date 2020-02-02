@@ -6,7 +6,7 @@
 4. In Terminal, run command ```ruby game.rb``` to start the game
 5. Follow the instructions in Terminal to play the game
 6. Enjoy!
- 
- 
-  
-* official submission by Abhi Gupta - February 1, 2020
+
+
+
+* Abhi Gupta - February 1st, 2020
