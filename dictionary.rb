@@ -20,9 +20,8 @@ class Dictionary
   end
 		
 	def render_codeword_hash
-		puts "Codeword: "
+		puts "\nCodeword: "
 		puts @codeword_hash.join(" ")
-		puts
 	end
 
 	def update_codeword_hash(guess)
@@ -32,8 +31,7 @@ class Dictionary
 	end
   
 	def render_codeword_matches
-		puts "Number of dictionary matches: #{@codeword_matches.size}"
-		puts
+		puts "\nNumber of dictionary matches: #{@codeword_matches.size}"
 	end
 	
 	# BONUS - dictionary matches algorithm
